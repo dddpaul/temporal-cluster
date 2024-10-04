@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 30000
+    port: 3000
+  selector:
+    app.kubernetes.io/name: grafana
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 30001
+    port: 9090
+  selector:
+    app.kubernetes.io/name: prometheus
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: temporal-web-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 30100
+    port: 8080
+  selector:
+    app.kubernetes.io/component: web
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: temporal-frontend-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: grpc
+    nodePort: 30101
+    port: 7233
+  selector:
+    app.kubernetes.io/component: frontend
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: temporal-cassandra-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 30200
+    port: 7000
+  selector:
+    app: cassandra
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: temporal-elasticsearch-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 30301
+    port: 9200
+  selector:
+    app: temporal-elasticsearch-master
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: temporal-kibana-nodeports
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 30302
+    port: 5601
+  selector:
+    app: kibana

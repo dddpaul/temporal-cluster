@@ -1,0 +1,64 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+
+- role: control-plane
+
+- role: worker
+  labels:
+    temporal/app: metrics
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 8081
+    protocol: TCP
+  - containerPort: 30001
+    hostPort: 8082
+    protocol: TCP
+
+- role: worker
+  labels:
+    temporal/app: web
+  extraPortMappings:
+  - containerPort: 30100
+    hostPort: 8083
+    protocol: TCP
+
+- role: worker
+  labels:
+    temporal/app: frontend
+  extraPortMappings:
+  - containerPort: 30101
+    hostPort: 7233
+    protocol: TCP
+
+- role: worker
+  labels:
+    temporal/app: history
+
+- role: worker
+  labels:
+    temporal/app: matching
+
+- role: worker
+  labels:
+    temporal/app: worker
+
+- role: worker
+  labels:
+    temporal/app: cassandra
+  extraPortMappings:
+  - containerPort: 30200
+    hostPort: 7000
+    protocol: TCP
+
+- role: worker
+  labels:
+    temporal/app: elasticsearch
+  extraPortMappings:
+  - containerPort: 30301
+    hostPort: 8084
+    protocol: TCP
+  - containerPort: 30302
+    hostPort: 8085
+    protocol: TCP
+  

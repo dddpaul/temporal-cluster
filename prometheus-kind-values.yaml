@@ -1,0 +1,7 @@
+prometheus:
+  nodeSelector:
+     temporal/app: metrics
+
+grafana:
+  nodeSelector:
+     temporal/app: metrics

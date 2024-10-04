@@ -1,0 +1,296 @@
+web:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: temporalio/ui
+    tag: 2.31.0
+  nodeSelector:
+    temporal/app: web
+
+admintools:
+  enabled: true
+  image:
+    repository: temporalio/admin-tools
+    tag: 1.25.0-tctl-1.18.1-cli-1.0.0
+  nodeSelector:
+    temporal/app: web
+
+server:
+  enabled: true
+  image:
+    repository: temporalio/server
+    tag: 1.25.0
+  replicaCount: 1
+  frontend:
+    nodeSelector:
+      temporal/app: frontend
+  history:
+    nodeSelector:
+      temporal/app: history
+  matching:
+    nodeSelector:
+      temporal/app: matching
+  worker:
+    nodeSelector:
+      temporal/app: worker
+
+cassandra:
+  enabled: true
+  image:
+    repo: cassandra
+    tag: 3.11.3
+  config:
+    cluster_size: 1
+  nodeSelector:
+    temporal/app: cassandra
+
+elasticsearch:
+  enabled: true
+  imageTag: 7.17.3
+  replicas: 1
+  clusterName: temporal-elasticsearch
+  host: temporal-elasticsearch-master-headless
+  nodeSelector:
+    temporal/app: elasticsearch
+
+prometheus:
+  enabled: false
+
+grafana:
+  enabled: false
+
+# server:
+#   enabled: true
+#   image:
+#     repository: temporalio/server
+#     tag: 1.25.0
+#   replicaCount: 3
+#   nodeSelector:
+#     temporal/app: server
+#   config:
+#     persistence:
+#       defaultStore: default
+#       additionalStores: {}
+#       default:
+#         driver: "cassandra"
+#         cassandra:
+#           hosts: []
+#           # port: 9042
+#           keyspace: "temporal"
+#           user: "user"
+#           password: "password"
+#           existingSecret: ""
+#           replicationFactor: 1
+#           # datacenter: "us-east-1a"
+#           # maxQPS: 1000
+#           # maxConns: 2
+#           consistency:
+#             default:
+#               consistency: "local_quorum"
+#               serialConsistency: "local_serial"
+#         sql:
+#           driver: "mysql"
+#           host: "mysql"
+#           port: 3306
+#           database: "temporal"
+#           user: "temporal"
+#           password: "temporal"
+#           existingSecret: ""
+#           secretName: ""
+#           maxConns: 20
+#           maxConnLifetime: "1h"
+#           # connectAttributes:
+#           # tx_isolation: 'READ-COMMITTED'
+#       visibility:
+#         driver: "cassandra"
+#         cassandra:
+#           hosts: []
+#           # port: 9042
+#           keyspace: "temporal_visibility"
+#           user: "user"
+#           password: "password"
+#           existingSecret: ""
+#           # datacenter: "us-east-1a"
+#           # maxQPS: 1000
+#           # maxConns: 2
+#           replicationFactor: 1
+#           consistency:
+#             default:
+#               consistency: "local_quorum"
+#               serialConsistency: "local_serial"
+#         sql:
+#           driver: "mysql"
+#           host: "mysql"
+#           port: 3306
+#           database: "temporal_visibility"
+#           user: "temporal"
+#           password: "temporal"
+#           existingSecret: ""
+#           secretName: ""
+#           maxConns: 20
+#           maxConnLifetime: "1h"
+#           # connectAttributes:
+#           #   tx_isolation: 'READ-COMMITTED'
+#     namespaces:
+#       # Enable this to create namespaces
+#       create: false
+#       namespace:
+#         - name: default
+#           retention: 3d
+#   frontend:
+#     service:
+#       type: ClusterIP
+#       port: 7233
+#       membershipPort: 6933
+#       httpPort: 7243
+#     ingress:
+#       enabled: false
+#   history:
+#     service:
+#       # type: ClusterIP
+#       port: 7234
+#       membershipPort: 6934
+#   matching:
+#     service:
+#       # type: ClusterIP
+#       port: 7235
+#       membershipPort: 6935
+#   worker:
+#     service:
+#       # type: ClusterIP
+#       port: 7239
+#       membershipPort: 6939
+# admintools:
+#   enabled: true
+#   image:
+#     repository: temporalio/admin-tools
+#     tag: 1.25.0-tctl-1.18.1-cli-1.0.0
+#   service:
+#     type: ClusterIP
+#     port: 22
+# web:
+#   enabled: true
+#   replicaCount: 1
+#   image:
+#     repository: temporalio/ui
+#     tag: 2.31.0
+#     pullPolicy: IfNotPresent
+#   service:
+#     # set type to NodePort if access to web needs access from outside the cluster
+#     # for more info see https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+#     type: ClusterIP
+#     port: 8080
+#     annotations: {}
+#     # loadBalancerIP:
+#   ingress:
+#     enabled: false
+#   nodeSelector:
+#     temporal/app: web
+# schema:
+#   createDatabase:
+#     enabled: true
+#   setup:
+#     enabled: true
+#     backoffLimit: 100
+#   update:
+#     enabled: true
+#     backoffLimit: 100
+#   podAnnotations: {}
+#   podLabels: {}
+#   resources: {}
+#   containerSecurityContext: {}
+#   securityContext: {}
+# elasticsearch:
+#   enabled: true
+#   replicas: 3
+#   persistence:
+#     enabled: false
+#   imageTag: 7.17.3
+#   host: elasticsearch-master-headless
+#   scheme: http
+#   port: 9200
+#   version: "v7"
+#   logLevel: "error"
+#   username: ""
+#   password: ""
+#   visibilityIndex: "temporal_visibility_v1_dev"
+# prometheus:
+#   enabled: true
+#   nodeExporter:
+#     enabled: false
+# grafana:
+#   enabled: true
+#   replicas: 1
+#   testFramework:
+#     enabled: false
+#   rbac:
+#     create: false
+#     pspEnabled: false
+#     namespaced: true
+#   dashboardProviders:
+#     dashboardproviders.yaml:
+#       apiVersion: 1
+#       providers:
+#         - name: "default"
+#           orgId: 1
+#           folder: ""
+#           type: file
+#           disableDeletion: false
+#           editable: true
+#           options:
+#             path: /var/lib/grafana/dashboards/default
+#   datasources:
+#     datasources.yaml:
+#       apiVersion: 1
+#       datasources:
+#         - name: TemporalMetrics
+#           type: prometheus
+#           url: http://{{ .Release.Name }}-prometheus-server
+#           access: proxy
+#           isDefault: true
+#   dashboards:
+#     default:
+#       server-general-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/server/server-general.json
+#         datasource: TemporalMetrics
+#       sdk-general-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/sdk/sdk-general.json
+#         datasource: TemporalMetrics
+#       misc-advanced-visibility-specific-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/misc/advanced-visibility-specific.json
+#         datasource: TemporalMetrics
+#       misc-clustermonitoring-kubernetes-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/misc/clustermonitoring-kubernetes.json
+#         datasource: TemporalMetrics
+#       misc-frontend-service-specific-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/misc/frontend-service-specific.json
+#         datasource: TemporalMetrics
+#       misc-history-service-specific-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/misc/history-service-specific.json
+#         datasource: TemporalMetrics
+#       misc-matching-service-specific-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/misc/matching-service-specific.json
+#         datasource: TemporalMetrics
+#       misc-worker-service-specific-github:
+#         url: https://raw.githubusercontent.com/temporalio/dashboards/helm/misc/worker-service-specific.json
+#         datasource: TemporalMetrics
+# cassandra:
+#   enabled: true
+#   persistence:
+#     enabled: false
+#   image:
+#     repo: cassandra
+#     tag: 3.11.3
+#     pullPolicy: IfNotPresent
+#   config:
+#     cluster_size: 3
+#     ports:
+#       cql: 9042
+#     num_tokens: 4
+#     max_heap_size: 512M
+#     heap_new_size: 128M
+#     seed_size: 0
+#   service:
+#     type: ClusterIP
+# mysql:
+#   enabled: false
