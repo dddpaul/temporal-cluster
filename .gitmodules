@@ -1,0 +1,3 @@
+[submodule "grafana/dashboards"]
+	path = grafana/dashboards
+	url = https://github.com/temporalio/dashboards.git
