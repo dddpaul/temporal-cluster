@@ -20,6 +20,9 @@ server:
   image:
     repository: temporalio/server
     tag: 1.25.0
+  serviceMonitor:
+    enabled: true
+    interval: 30s
   replicaCount: 1
   frontend:
     nodeSelector:
