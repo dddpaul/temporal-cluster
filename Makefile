@@ -34,8 +34,8 @@ install-temporal:
 	@helm upgrade -i ${HELM_TEMPORAL_NAME} temporal/temporal -f temporal-kind-values.yaml
 	@kubectl get pods | grep "temporal-" | cut -d' ' -f1 | xargs -I{} kubectl label pods {} cluster=temporal
 	@kubectl apply -f temporal-nodeports.yaml
-	@kubectl wait --namespace default --for=condition=ready pod --selector=app.kubernetes.io/component=history --timeout=300s
 	@kubectl wait --namespace default --for=condition=ready pod --selector=app.kubernetes.io/component=frontend --timeout=300s
+	@kubectl wait --namespace default --for=condition=ready pod --selector=app.kubernetes.io/component=history --timeout=300s
 	@kubectl exec -it services/temporal-admintools -- tctl namespace register
 
 install: helm install-metrics install-temporal
@@ -49,3 +49,6 @@ destroy:
 
 curl:
 	kubectl run curl --image=curlimages/curl -i --tty -- sh
+
+ns:
+	@kubectl exec -it services/temporal-admintools -- tctl namespace register
