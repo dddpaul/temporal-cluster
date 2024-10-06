@@ -25,6 +25,9 @@ server:
     serviceMonitor:
       enabled: true
       interval: 30s
+      # Release label should match prometheus-stack Helm release name
+      additionalLabels:
+        release: metrics
   frontend:
     nodeSelector:
       temporal/app: frontend
