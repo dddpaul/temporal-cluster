@@ -48,7 +48,7 @@ nodes:
     temporal/app: cassandra
   extraPortMappings:
   - containerPort: 30200
-    hostPort: 7000
+    hostPort: 9042
     protocol: TCP
 
 - role: worker
