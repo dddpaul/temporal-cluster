@@ -48,8 +48,9 @@ cassandra:
     tag: 3.11.3
   config:
     cluster_size: 1
-  nodeSelector:
-    temporal/app: cassandra
+  selector:
+    nodeSelector:
+      temporal/app: cassandra
 
 elasticsearch:
   enabled: true
