@@ -60,6 +60,9 @@ elasticsearch:
   host: temporal-elasticsearch-master-headless
   nodeSelector:
     temporal/app: elasticsearch
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false
 
 prometheus:
   enabled: false
